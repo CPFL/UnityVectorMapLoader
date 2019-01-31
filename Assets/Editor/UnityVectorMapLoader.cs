@@ -1,21 +1,39 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.IO;
+using System;
+using System.Collections.Generic;
 
-public class MenuItems
+public class MenuItems : EditorWindow
 {
-    [MenuItem("UnityVectorMapLoader/Load")]
+    private static List<string> csv_files;
+    private static VectorMapParser parser;
+
+    [MenuItem("UnityVectorMapLoader/LoadVectorMap")]
     public static void OpenVectorMapDir()
     {
-
-        if (Application.platform == RuntimePlatform.OSXEditor)
+        string path = EditorUtility.OpenFolderPanel("Load csv files", "", "");
+        string[] files = Directory.GetFiles(path);
+        if(files == null)
         {
-            System.Diagnostics.Process.Start(Application.persistentDataPath);
+            Debug.LogWarning("Failed to get csv filepath.");
+            return;
         }
-        else if (Application.platform == RuntimePlatform.WindowsEditor)
-        {
-            EditorUtility.RevealInFinder(Application.persistentDataPath);
-            Debug.Log("ShowInExplorer:" + Application.persistentDataPath);
-        }
+        csv_files = new List<string>();
+        foreach (string file in files)
+            if (file.EndsWith(".csv"))
+                csv_files.Add(file);
+    }
 
+    [MenuItem("UnityVectorMapLoader/GenerateUnityMap")]
+    public static void GenerateUnityMap()
+    {
+        parser = new VectorMapParser();
+        if(csv_files.Count == 0)
+        {
+            Debug.LogWarning("No vector map csv file was loaded");
+            return;
+        }
+        parser.parse(csv_files);
     }
 }
