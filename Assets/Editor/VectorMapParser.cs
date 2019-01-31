@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using VectorMapObjects;
+using VectorMapData;
 
 public class VectorMapParser
 {
@@ -13,12 +13,21 @@ public class VectorMapParser
         lines_data = new Dictionary<int, Line>();
         whitelines_data = new Dictionary<int, WhiteLine>();
         yellowlines_data = new Dictionary<int, YellowLine>();
+        road_edges_data = new Dictionary<int, RoadEdge>();
     }
 
     public void parse(List<string> csv_files)
     {
         updatePointsData(csv_files);
         updateLineData(csv_files);
+        updateWhiteAndYellowLineData(csv_files);
+        updateRoadEdgeData(csv_files);
+    }
+
+    public VectorMapData.VectorMapData getVectorMapData()
+    {
+        VectorMapData.VectorMapData data = new VectorMapData.VectorMapData(points_data,lines_data,whitelines_data,yellowlines_data,road_edges_data);
+        return data;
     }
 
     private string getFilePathFromFilename(List<string> paths, string filename)
@@ -44,7 +53,7 @@ public class VectorMapParser
         {
             if(count != 0)
             {
-                points_data[int.Parse(line[0])] = new Point(int.Parse(line[0]), double.Parse(line[5]), double.Parse(line[4]), double.Parse(line[3]));
+                points_data[int.Parse(line[0])] = new Point(int.Parse(line[0]), double.Parse(line[4]), double.Parse(line[5]), double.Parse(line[3]));
             }
             count++;
         }
@@ -94,6 +103,23 @@ public class VectorMapParser
         }
     }
 
+    //update road_edge dict
+    private void updateRoadEdgeData(List<string> csv_files)
+    {
+        int count = 0;
+        road_edges_data.Clear();
+        string csv_path = getFilePathFromFilename(csv_files, "roadedge.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
+        {
+            if (count != 0)
+            {
+                road_edges_data[int.Parse(line[1])] = new RoadEdge(int.Parse(line[0]),int.Parse(line[1]));
+            }
+            count++;
+        }
+    }
+
     private CsvReader reader;
     //key PID, value Point Data
     private Dictionary<int, Point> points_data;
@@ -103,4 +129,6 @@ public class VectorMapParser
     private Dictionary<int, WhiteLine> whitelines_data;
     //key LID, value YellowLine Data
     private Dictionary<int, YellowLine> yellowlines_data;
+    //key LID, value RoadEdge Data
+    private readonly Dictionary<int, RoadEdge> road_edges_data;
 }
