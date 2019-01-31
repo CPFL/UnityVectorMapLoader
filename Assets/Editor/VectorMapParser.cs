@@ -9,6 +9,10 @@ public class VectorMapParser
     public VectorMapParser()
     {
         reader = new CsvReader();
+        points_data = new Dictionary<int, Point>();
+        lines_data = new Dictionary<int, Line>();
+        whitelines_data = new Dictionary<int, WhiteLine>();
+        yellowlines_data = new Dictionary<int, YellowLine>();
     }
 
     public void parse(List<string> csv_files)
@@ -34,9 +38,9 @@ public class VectorMapParser
     {
         int count = 0;
         points_data.Clear();
-        string point_csv_path = getFilePathFromFilename(csv_files, "point.csv");
-        List<List<string>> points_data_str = reader.Read(point_csv_path);
-        foreach (var line in points_data_str)
+        string csv_path = getFilePathFromFilename(csv_files, "point.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
         {
             if(count != 0)
             {
@@ -51,9 +55,9 @@ public class VectorMapParser
     {
         int count = 0;
         lines_data.Clear();
-        string lines_csv_path = getFilePathFromFilename(csv_files, "line.csv");
-        List<List<string>> line_data_str = reader.Read(lines_csv_path);
-        foreach (var line in line_data_str)
+        string csv_path = getFilePathFromFilename(csv_files, "line.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
         {
             if (count != 0)
             {
@@ -65,7 +69,38 @@ public class VectorMapParser
         }
     }
 
+    //update white_line and yellow line dict
+    private void updateWhiteAndYellowLineData(List<string> csv_files)
+    {
+        int count = 0;
+        whitelines_data.Clear();
+        yellowlines_data.Clear();
+        string csv_path = getFilePathFromFilename(csv_files, "whiteline.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
+        {
+            if (count != 0)
+            {
+                if(line[3] == "W")
+                {
+                    whitelines_data[int.Parse(line[1])] = new WhiteLine(int.Parse(line[0]),int.Parse(line[1]),double.Parse(line[2]));
+                }
+                if(line[3] == "Y")
+                {
+                    yellowlines_data[int.Parse(line[1])] = new YellowLine(int.Parse(line[0]),int.Parse(line[1]), double.Parse(line[2]));
+                }
+            }
+            count++;
+        }
+    }
+
     private CsvReader reader;
+    //key PID, value Point Data
     private Dictionary<int, Point> points_data;
+    //key LID, value Line Data
     private Dictionary<int, Line> lines_data;
+    //key LID, value WhiteLine Data
+    private Dictionary<int, WhiteLine> whitelines_data;
+    //key LID, value YellowLine Data
+    private Dictionary<int, YellowLine> yellowlines_data;
 }
