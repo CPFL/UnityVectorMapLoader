@@ -39,6 +39,6 @@ public class MenuItems : EditorWindow
         parser.parse(csv_files);
         VectorMapData.VectorMapData vector_map_data = parser.getVectorMapData();
         VectorMapObjectSpawner spawner = new VectorMapObjectSpawner();
-        spawner.spawm(vector_map_data);
+        spawner.spawn(vector_map_data);
     }
 }

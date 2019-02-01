@@ -27,30 +27,37 @@ public class VectorMapObjectSpawner
         spawner = new ObjectSpawner();
     }
 
-    public void spawm(VectorMapData.VectorMapData data)
+    public void spawn(VectorMapData.VectorMapData data)
     {
-        //spawm white lines
+        //spawn white lines
         foreach (KeyValuePair<int, WhiteLine> pair in data.whitelines_data)
         {
             GameObject line_object = spawner.SpawnLine(data.lines_data[pair.Value.lid].start_point, 
                 data.lines_data[pair.Value.lid].end_point, pair.Value.width, "WhiteLine"+pair.Value.id.ToString(),Color.white);
             line_object.transform.parent = white_line_game_object.transform;
         }
-        //spawm yellow lines
+        //spawn yellow lines
         foreach (KeyValuePair<int, YellowLine> pair in data.yellowlines_data)
         {
             GameObject line_object = spawner.SpawnLine(data.lines_data[pair.Value.lid].start_point,
                 data.lines_data[pair.Value.lid].end_point, pair.Value.width, "YellowLine" + pair.Value.id.ToString(), Color.yellow);
             line_object.transform.parent = yellow_line_game_object.transform;
         }
-        //spawm road edges
+        //spawn road edges
         foreach (KeyValuePair<int, RoadEdge> pair in data.road_edges_data)
         {
             GameObject line_object = spawner.SpawnLine(data.lines_data[pair.Value.lid].start_point,
                 data.lines_data[pair.Value.lid].end_point, 0.3, "RoadEdge" + pair.Value.id.ToString(), Color.gray);
             line_object.transform.parent = road_edge_game_object.transform;
         }
-        //spawm poles
+        //spawn white lines
+        foreach (KeyValuePair<int, StopLine> pair in data.stopline_data)
+        {
+            GameObject line_object = spawner.SpawnLine(data.lines_data[pair.Value.lid].start_point,
+                data.lines_data[pair.Value.lid].end_point, 0.3, "StopLine" + pair.Value.id.ToString(), Color.white);
+            line_object.transform.parent = road_edge_game_object.transform;
+        }
+        //spawn poles
         foreach (KeyValuePair<int,Pole> pair in data.pole_data)
         {
             Vector3 vector = new Vector3(0, (float)pair.Value.length, 0);
@@ -59,7 +66,7 @@ public class VectorMapObjectSpawner
                 "Pole"+pair.Value.plid.ToString(),Color.gray);
             cylinder_object.transform.parent = pole_game_object.transform;
         }
-        //spawm signs
+        //spawn signs
         foreach(KeyValuePair<int,Sign> pair in data.sign_data)
         {
             GameObject sign_object = spawner.SpawnSign(pair.Value.vector.start_point,pair.Value.vector.horizontal_angle,
