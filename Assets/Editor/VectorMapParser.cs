@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 using UnityEngine;
 using VectorMapData;
 
@@ -11,9 +12,11 @@ public class VectorMapParser
         reader = new CsvReader();
         points_data = new Dictionary<int, Point>();
         lines_data = new Dictionary<int, Line>();
+        vector_data = new Dictionary<int, Vector>();
         whitelines_data = new Dictionary<int, WhiteLine>();
         yellowlines_data = new Dictionary<int, YellowLine>();
         road_edges_data = new Dictionary<int, RoadEdge>();
+        pole_data = new Dictionary<int, Pole>();
     }
 
     public void parse(List<string> csv_files)
@@ -22,11 +25,14 @@ public class VectorMapParser
         updateLineData(csv_files);
         updateWhiteAndYellowLineData(csv_files);
         updateRoadEdgeData(csv_files);
+        updateVectorData(csv_files);
+        updatePoleData(csv_files);
     }
 
     public VectorMapData.VectorMapData getVectorMapData()
     {
-        VectorMapData.VectorMapData data = new VectorMapData.VectorMapData(points_data,lines_data,whitelines_data,yellowlines_data,road_edges_data);
+        VectorMapData.VectorMapData data = new VectorMapData.VectorMapData(points_data, 
+            lines_data,vector_data,whitelines_data,yellowlines_data,road_edges_data,pole_data);
         return data;
     }
 
@@ -120,15 +126,54 @@ public class VectorMapParser
         }
     }
 
+    //update vector data dict
+    private void updateVectorData(List<string> csv_files)
+    {
+        int count = 0;
+        vector_data.Clear();
+        string csv_path = getFilePathFromFilename(csv_files, "vector.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
+        {
+            if (count != 0)
+            {
+                Point start_point = points_data[int.Parse(line[1])];
+                vector_data[int.Parse(line[0])] = new Vector(int.Parse(line[0]), start_point, double.Parse(line[2]), double.Parse(line[3]));
+            }
+            count++;
+        }
+    }
+
+    //update pole data dict
+    private void updatePoleData(List<string> csv_files)
+    {
+        int count = 0;
+        pole_data.Clear();
+        string csv_path = getFilePathFromFilename(csv_files, "pole.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
+        {
+            if (count != 0)
+            {
+                pole_data[int.Parse(line[1])] = new Pole(int.Parse(line[0]), vector_data[int.Parse(line[1])], double.Parse(line[2]), double.Parse(line[3]));
+            }
+            count++;
+        }
+    }
+
     private CsvReader reader;
     //key PID, value Point Data
     private Dictionary<int, Point> points_data;
     //key LID, value Line Data
     private Dictionary<int, Line> lines_data;
+    //key VID, value Vector Data
+    public readonly Dictionary<int, Vector> vector_data;
     //key LID, value WhiteLine Data
     private Dictionary<int, WhiteLine> whitelines_data;
     //key LID, value YellowLine Data
     private Dictionary<int, YellowLine> yellowlines_data;
     //key LID, value RoadEdge Data
     private readonly Dictionary<int, RoadEdge> road_edges_data;
+    //key VID value Pole Data
+    private readonly Dictionary<int, Pole> pole_data;
 }

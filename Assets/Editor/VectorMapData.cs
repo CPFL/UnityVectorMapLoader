@@ -10,22 +10,28 @@ namespace VectorMapData
         public readonly Dictionary<int, Point> points_data;
         //key LID, value Line Data
         public readonly Dictionary<int, Line> lines_data;
+        //key VID, value Vector Data
+        public readonly Dictionary<int, Vector> vector_data;
         //key LID, value WhiteLine Data
         public readonly Dictionary<int, WhiteLine> whitelines_data;
         //key LID, value YellowLine Data
         public readonly Dictionary<int, YellowLine> yellowlines_data;
         //key LID, value RoadEdge Data
         public readonly Dictionary<int, RoadEdge> road_edges_data;
+        //key VID, value Pole Data
+        public readonly Dictionary<int, Pole> pole_data;
 
-        public VectorMapData(Dictionary<int, Point> points_data, Dictionary<int, Line> lines_data,
+        public VectorMapData(Dictionary<int, Point> points_data, Dictionary<int, Line> lines_data, Dictionary<int, Vector> vector_data,
             Dictionary<int, WhiteLine> whitelines_data, Dictionary<int, YellowLine> yellowlines_data,
-            Dictionary<int, RoadEdge> road_edges_data)
+            Dictionary<int, RoadEdge> road_edges_data, Dictionary<int,Pole> pole_data)
         {
             this.points_data = points_data;
             this.lines_data = lines_data;
+            this.vector_data = vector_data;
             this.whitelines_data = whitelines_data;
             this.yellowlines_data = yellowlines_data;
             this.road_edges_data = road_edges_data;
+            this.pole_data = pole_data;
         }
     }
 
@@ -89,14 +95,44 @@ namespace VectorMapData
 
     public class Area
     {
-        public readonly int id;
+        public readonly int aid;
         public readonly int slid;
         public readonly int elid;
-        public Area(int id,int slid,int elid)
+        public Area(int aid,int slid,int elid)
         {
-            this.id = id;
+            this.aid = aid;
             this.slid = slid;
             this.elid = elid;
+        }
+    }
+
+    public class Vector
+    {
+        public readonly int vid;
+        public readonly Point start_point;
+        public readonly double horizontal_angle;
+        public readonly double vertical_angle;
+        public Vector(int vid, Point start_point, double horizontal_angle,double vertical_angle)
+        {
+            this.vid = vid;
+            this.start_point = start_point;
+            this.horizontal_angle = horizontal_angle;
+            this.vertical_angle = vertical_angle;
+        }
+    }
+
+    public class Pole
+    {
+        public readonly int plid;
+        public readonly Vector vector;
+        public readonly double length;
+        public readonly double dim;
+        public Pole(int plid,Vector vector,double length,double dim)
+        {
+            this.plid = plid;
+            this.vector = vector;
+            this.length = length;
+            this.dim = dim;
         }
     }
 
@@ -135,5 +171,11 @@ namespace VectorMapData
             this.id = id;
             this.lid = lid;
         }
+    }
+
+    public class Sign
+    {
+        public readonly int id;
+        public readonly Vector vector;
     }
 }
