@@ -10,6 +10,7 @@ public class VectorMapParser
     public VectorMapParser()
     {
         reader = new CsvReader();
+        grounded_points = new List<Point>();
         points_data = new Dictionary<int, Point>();
         lines_data = new Dictionary<int, Line>();
         vector_data = new Dictionary<int, Vector>();
@@ -41,6 +42,11 @@ public class VectorMapParser
             lines_data,vector_data,area_data,whitelines_data,yellowlines_data, 
             stopline_data, road_edges_data, pole_data,sign_data);
         return data;
+    }
+
+    public List<Point> getGroundedPoints()
+    {
+        return grounded_points;
     }
 
     private string getFilePathFromFilename(List<string> paths, string filename)
@@ -106,10 +112,14 @@ public class VectorMapParser
                 if(line[3] == "W")
                 {
                     whitelines_data[int.Parse(line[1])] = new WhiteLine(int.Parse(line[0]),int.Parse(line[1]),double.Parse(line[2]));
+                    grounded_points.Add(lines_data[whitelines_data[int.Parse(line[1])].lid].start_point);
+                    grounded_points.Add(lines_data[whitelines_data[int.Parse(line[1])].lid].end_point);
                 }
                 if(line[3] == "Y")
                 {
                     yellowlines_data[int.Parse(line[1])] = new YellowLine(int.Parse(line[0]),int.Parse(line[1]), double.Parse(line[2]));
+                    grounded_points.Add(lines_data[yellowlines_data[int.Parse(line[1])].lid].start_point);
+                    grounded_points.Add(lines_data[yellowlines_data[int.Parse(line[1])].lid].end_point);
                 }
             }
             count++;
@@ -128,6 +138,8 @@ public class VectorMapParser
             if (count != 0)
             {
                 stopline_data[int.Parse(line[1])] = new StopLine(int.Parse(line[0]), int.Parse(line[1]), int.Parse(line[2]), int.Parse(line[3]), int.Parse(line[4]));
+                grounded_points.Add(lines_data[stopline_data[int.Parse(line[1])].lid].start_point);
+                grounded_points.Add(lines_data[stopline_data[int.Parse(line[1])].lid].end_point);
             }
             count++;
         }
@@ -145,6 +157,8 @@ public class VectorMapParser
             if (count != 0)
             {
                 road_edges_data[int.Parse(line[1])] = new RoadEdge(int.Parse(line[0]),int.Parse(line[1]));
+                grounded_points.Add(lines_data[road_edges_data[int.Parse(line[1])].lid].start_point);
+                grounded_points.Add(lines_data[road_edges_data[int.Parse(line[1])].lid].end_point);
             }
             count++;
         }
@@ -240,4 +254,6 @@ public class VectorMapParser
     private readonly Dictionary<int, Pole> pole_data;
     //key VID value Sign Data
     private readonly Dictionary<int, Sign> sign_data;
+    //list of points on the ground
+    private List<Point> grounded_points;
 }
