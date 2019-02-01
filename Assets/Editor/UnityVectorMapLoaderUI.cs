@@ -3,6 +3,7 @@ using UnityEditor;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using VectorMapData;
 
 public class MenuItems : EditorWindow
 {
@@ -23,6 +24,7 @@ public class MenuItems : EditorWindow
         foreach (string file in files)
             if (file.EndsWith(".csv"))
                 csv_files.Add(file);
+        Debug.Log("load vectormap csv files successfully.");
     }
 
     [MenuItem("UnityVectorMapLoader/GenerateUnityMap")]
@@ -35,5 +37,10 @@ public class MenuItems : EditorWindow
             return;
         }
         parser.parse(csv_files);
+        VectorMapData.VectorMapData vector_map_data = parser.getVectorMapData();
+        VectorMapObjectSpawner spawner = new VectorMapObjectSpawner();
+        spawner.spawn(vector_map_data);
+        TerrainGenerator generator = new TerrainGenerator();
+        generator.generate(parser.getGroundedPoints());
     }
 }
