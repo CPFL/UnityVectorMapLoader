@@ -17,6 +17,7 @@ public class VectorMapParser
         yellowlines_data = new Dictionary<int, YellowLine>();
         road_edges_data = new Dictionary<int, RoadEdge>();
         pole_data = new Dictionary<int, Pole>();
+        sign_data = new Dictionary<int, Sign>();
     }
 
     public void parse(List<string> csv_files)
@@ -27,12 +28,13 @@ public class VectorMapParser
         updateRoadEdgeData(csv_files);
         updateVectorData(csv_files);
         updatePoleData(csv_files);
+        updateSignData(csv_files);
     }
 
     public VectorMapData.VectorMapData getVectorMapData()
     {
         VectorMapData.VectorMapData data = new VectorMapData.VectorMapData(points_data, 
-            lines_data,vector_data,whitelines_data,yellowlines_data,road_edges_data,pole_data);
+            lines_data,vector_data,whitelines_data,yellowlines_data,road_edges_data,pole_data,sign_data);
         return data;
     }
 
@@ -161,6 +163,22 @@ public class VectorMapParser
         }
     }
 
+    private void updateSignData(List<string> csv_files)
+    {
+        int count = 0;
+        sign_data.Clear();
+        string csv_path = getFilePathFromFilename(csv_files, "roadsign.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
+        {
+            if (count != 0)
+            {
+                sign_data[int.Parse(line[1])] = new Sign(int.Parse(line[0]),int.Parse(line[2]),vector_data[int.Parse(line[1])],int.Parse(line[4]));
+            }
+            count++;
+        }
+    }
+
     private CsvReader reader;
     //key PID, value Point Data
     private Dictionary<int, Point> points_data;
@@ -176,4 +194,6 @@ public class VectorMapParser
     private readonly Dictionary<int, RoadEdge> road_edges_data;
     //key VID value Pole Data
     private readonly Dictionary<int, Pole> pole_data;
+    //key VID value Sign Data
+    private readonly Dictionary<int, Sign> sign_data;
 }

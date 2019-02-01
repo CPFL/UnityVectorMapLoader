@@ -39,4 +39,15 @@ public class ObjectSpawner
         obj.GetComponent<Renderer>().material.color = color;
         return obj;
     }
+
+    public GameObject SpawnSign(Point start_point, double direction, string name, Color color)
+    {
+        GameObject prefab = (GameObject)Resources.Load("Sign");
+        Vector3 position = new Vector3((float)start_point.x, (float)start_point.y, (float)start_point.z);
+        Quaternion rotation = Quaternion.Euler(90, (float)direction, 0);
+        GameObject obj = UnityEngine.Object.Instantiate(prefab, position, rotation);
+        obj.name = name;
+        obj.GetComponent<Renderer>().material.color = color;
+        return obj;
+    }
 }
