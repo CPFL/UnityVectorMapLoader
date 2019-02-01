@@ -11,6 +11,16 @@ public class ObjectSpawner
 
     }
 
+    public GameObject SpawnCube(Vector3 position, Quaternion rotation, Vector3 scale, string name,Color color)
+    {
+        GameObject prefab = (GameObject)Resources.Load("Cube");
+        GameObject obj = UnityEngine.Object.Instantiate(prefab, position, rotation);
+        obj.name = name;
+        obj.transform.localScale = scale;
+        obj.GetComponent<Renderer>().material.color = color;
+        return obj;
+    }
+
     public GameObject SpawnLine(Point start_point,Point end_point,double width, string name,Color color)
     {
         GameObject prefab = (GameObject)Resources.Load("Cube");
