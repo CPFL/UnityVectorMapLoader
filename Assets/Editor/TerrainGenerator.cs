@@ -12,7 +12,7 @@ public class TerrainGenerator
         //terrain = new Terrain();
     }
 
-    public void generate(List<Point> grounded_points)
+    public void generate(GameObject vector_map_game_object,List<Point> grounded_points)
     {
         Vector3 endpoint0 = new Vector3();
         Vector3 endpoint1 = new Vector3();
@@ -23,7 +23,8 @@ public class TerrainGenerator
         scale.x = scale.x + 10;
         scale.z = scale.z + 10;
         scale.y = (float)0.01;
-        spawner.SpawnCube(point,Quaternion.Euler(0,0,0),scale,"Ground",new Color(60f/255f, 68f/255f, 60f/255f));
+        terrain_box = spawner.SpawnCube(point,Quaternion.Euler(0,0,0),scale,"Ground",new Color(60f/255f, 68f/255f, 60f/255f));
+        terrain_box.transform.parent = vector_map_game_object.transform;
     }
 
     private void getBoundingBox(List<Point> grounded_points,ref Vector3 endpoint0, ref Vector3 endpoint1)

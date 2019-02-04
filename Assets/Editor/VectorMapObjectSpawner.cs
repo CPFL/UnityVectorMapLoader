@@ -76,7 +76,7 @@ public class VectorMapObjectSpawner
     }
 
     private ObjectSpawner spawner;
-    private GameObject vector_map_game_object;
+    public readonly GameObject vector_map_game_object;
     private GameObject white_line_game_object;
     private GameObject yellow_line_game_object;
     private GameObject road_edge_game_object;
