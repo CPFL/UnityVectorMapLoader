@@ -52,3 +52,6 @@ crashlytics-build.properties
 
 # Data folder
 Data/*
+
+# Assets
+Assets/Buildings/*
