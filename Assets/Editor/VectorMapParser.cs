@@ -7,6 +7,32 @@ using VectorMapData;
 
 public class VectorMapParser
 {
+    private CsvReader reader;
+    //key PID, value Point Data
+    private Dictionary<int, Point> points_data;
+    //key LID, value Line Data
+    private Dictionary<int, Line> lines_data;
+    //key VID, value Vector Data
+    public readonly Dictionary<int, Vector> vector_data;
+    //key AID, value Area Data
+    public readonly Dictionary<int, Area> area_data;
+    //key LID, value WhiteLine Data
+    private Dictionary<int, WhiteLine> whitelines_data;
+    //key LID, value YellowLine Data
+    private Dictionary<int, YellowLine> yellowlines_data;
+    //key LID value StopLine Data
+    private readonly Dictionary<int, StopLine> stopline_data;
+    //key LID, value RoadEdge Data
+    private readonly Dictionary<int, RoadEdge> road_edges_data;
+    //key VID value Pole Data
+    private readonly Dictionary<int, Pole> pole_data;
+    //key VID value Sign Data
+    private readonly Dictionary<int, Sign> sign_data;
+    //key AID, value WayArea Data
+    private readonly Dictionary<int, WayArea> wayarea_data;
+    //list of points on the ground
+    private List<Point> grounded_points;
+
     public VectorMapParser()
     {
         reader = new CsvReader();
@@ -21,6 +47,7 @@ public class VectorMapParser
         road_edges_data = new Dictionary<int, RoadEdge>();
         pole_data = new Dictionary<int, Pole>();
         sign_data = new Dictionary<int, Sign>();
+        wayarea_data = new Dictionary<int, WayArea>();
     }
 
     public void parse(List<string> csv_files)
@@ -40,7 +67,7 @@ public class VectorMapParser
     {
         VectorMapData.VectorMapData data = new VectorMapData.VectorMapData(points_data, 
             lines_data,vector_data,area_data,whitelines_data,yellowlines_data, 
-            stopline_data, road_edges_data, pole_data,sign_data);
+            stopline_data, road_edges_data, pole_data,sign_data,wayarea_data);
         return data;
     }
 
@@ -232,28 +259,4 @@ public class VectorMapParser
             count++;
         }
     }
-
-    private CsvReader reader;
-    //key PID, value Point Data
-    private Dictionary<int, Point> points_data;
-    //key LID, value Line Data
-    private Dictionary<int, Line> lines_data;
-    //key VID, value Vector Data
-    public readonly Dictionary<int, Vector> vector_data;
-    //key AID, value Area Data
-    public readonly Dictionary<int, Area> area_data;
-    //key LID, value WhiteLine Data
-    private Dictionary<int, WhiteLine> whitelines_data;
-    //key LID, value YellowLine Data
-    private Dictionary<int, YellowLine> yellowlines_data;
-    //key LID value StopLine Data
-    public readonly Dictionary<int, StopLine> stopline_data;
-    //key LID, value RoadEdge Data
-    private readonly Dictionary<int, RoadEdge> road_edges_data;
-    //key VID value Pole Data
-    private readonly Dictionary<int, Pole> pole_data;
-    //key VID value Sign Data
-    private readonly Dictionary<int, Sign> sign_data;
-    //list of points on the ground
-    private List<Point> grounded_points;
 }

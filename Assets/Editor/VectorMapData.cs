@@ -26,10 +26,12 @@ namespace VectorMapData
         public readonly Dictionary<int, Pole> pole_data;
         //key VID, value Sign Data
         public readonly Dictionary<int, Sign> sign_data;
+        //key AID, value WayArea Data
+        public readonly Dictionary<int, WayArea> wayarea_data;
 
         public VectorMapData(Dictionary<int, Point> points_data, Dictionary<int, Line> lines_data, Dictionary<int, Vector> vector_data, Dictionary<int, Area> area_data,
             Dictionary<int, WhiteLine> whitelines_data, Dictionary<int, YellowLine> yellowlines_data,Dictionary<int, StopLine> stopline_data,
-            Dictionary<int, RoadEdge> road_edges_data, Dictionary<int,Pole> pole_data, Dictionary<int, Sign> sign_data)
+            Dictionary<int, RoadEdge> road_edges_data, Dictionary<int,Pole> pole_data, Dictionary<int, Sign> sign_data, Dictionary<int, WayArea> wayarea_data)
         {
             this.points_data = points_data;
             this.lines_data = lines_data;
@@ -41,6 +43,7 @@ namespace VectorMapData
             this.road_edges_data = road_edges_data;
             this.pole_data = pole_data;
             this.sign_data = sign_data;
+            this.wayarea_data = wayarea_data;
         }
     }
 
@@ -211,6 +214,17 @@ namespace VectorMapData
             this.plid = plid;
             this.vector = vector;
             this.linkid = linkid;
+        }
+    }
+
+    public class WayArea
+    {
+        public readonly int id;
+        public readonly int aid;
+        public WayArea(int id,int aid)
+        {
+            this.id = id;
+            this.aid = aid;
         }
     }
 }
