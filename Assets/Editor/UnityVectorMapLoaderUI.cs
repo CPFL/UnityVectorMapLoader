@@ -41,6 +41,6 @@ public class MenuItems : EditorWindow
         VectorMapObjectSpawner spawner = new VectorMapObjectSpawner();
         spawner.spawn(vector_map_data);
         TerrainGenerator generator = new TerrainGenerator();
-        generator.generate(parser.getGroundedPoints());
+        generator.generate(spawner.vector_map_game_object,parser.getGroundedPoints());
     }
 }
