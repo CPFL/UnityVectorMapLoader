@@ -26,12 +26,12 @@ namespace VectorMapData
         public readonly Dictionary<int, Pole> pole_data;
         //key VID, value Sign Data
         public readonly Dictionary<int, Sign> sign_data;
-        //key AID, value WayArea Data
-        public readonly Dictionary<int, WayArea> wayarea_data;
+        //WayArea Data
+        private readonly List<WayArea> wayarea_data;
 
         public VectorMapData(Dictionary<int, Point> points_data, Dictionary<int, Line> lines_data, Dictionary<int, Vector> vector_data, Dictionary<int, Area> area_data,
             Dictionary<int, WhiteLine> whitelines_data, Dictionary<int, YellowLine> yellowlines_data,Dictionary<int, StopLine> stopline_data,
-            Dictionary<int, RoadEdge> road_edges_data, Dictionary<int,Pole> pole_data, Dictionary<int, Sign> sign_data, Dictionary<int, WayArea> wayarea_data)
+            Dictionary<int, RoadEdge> road_edges_data, Dictionary<int,Pole> pole_data, Dictionary<int, Sign> sign_data, List<WayArea> wayarea_data)
         {
             this.points_data = points_data;
             this.lines_data = lines_data;

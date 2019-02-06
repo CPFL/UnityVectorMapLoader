@@ -9,17 +9,17 @@ public class TerrainGenerator
     {
         terrain_box = new GameObject();
         spawner = new ObjectSpawner();
+        terrain_endpoint0 = new Vector3();
+        terrain_endpoint1 = new Vector3();
         //terrain = new Terrain();
     }
 
     public void generate(GameObject vector_map_game_object,List<Point> grounded_points)
     {
-        Vector3 endpoint0 = new Vector3();
-        Vector3 endpoint1 = new Vector3();
-        getBoundingBox(grounded_points,ref endpoint0,ref endpoint1);
-        Vector3 point = (endpoint0 + endpoint1) / 2;
-        point.y = endpoint0.y;
-        Vector3 scale = endpoint1 - endpoint0;
+        getBoundingBox(grounded_points,ref terrain_endpoint0, ref terrain_endpoint1);
+        Vector3 point = (terrain_endpoint0 + terrain_endpoint1) / 2;
+        point.y = terrain_endpoint0.y;
+        Vector3 scale = terrain_endpoint1 - terrain_endpoint0;
         scale.x = scale.x + 10;
         scale.z = scale.z + 10;
         scale.y = (float)0.01;
@@ -70,5 +70,17 @@ public class TerrainGenerator
 
     private GameObject terrain_box;
     private ObjectSpawner spawner;
+    private Vector3 terrain_endpoint0;
+    private Vector3 terrain_endpoint1;
+
+    public Vector3 getTerrainEndpoint0()
+    {
+        return terrain_endpoint0;
+    }
+
+    public Vector3 getTerrainEndpoint1()
+    {
+        return terrain_endpoint1;
+    }
     //private Terrain terrain;
 }

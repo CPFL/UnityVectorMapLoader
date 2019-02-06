@@ -28,8 +28,8 @@ public class VectorMapParser
     private readonly Dictionary<int, Pole> pole_data;
     //key VID value Sign Data
     private readonly Dictionary<int, Sign> sign_data;
-    //key AID, value WayArea Data
-    private readonly Dictionary<int, WayArea> wayarea_data;
+    //WayArea Data
+    private readonly List<WayArea> wayarea_data;
     //list of points on the ground
     private List<Point> grounded_points;
 
@@ -47,7 +47,7 @@ public class VectorMapParser
         road_edges_data = new Dictionary<int, RoadEdge>();
         pole_data = new Dictionary<int, Pole>();
         sign_data = new Dictionary<int, Sign>();
-        wayarea_data = new Dictionary<int, WayArea>();
+        wayarea_data = new List<WayArea>();
     }
 
     public void parse(List<string> csv_files)
@@ -255,6 +255,23 @@ public class VectorMapParser
             if (count != 0)
             {
                 area_data[int.Parse(line[0])] = new Area(int.Parse(line[0]),int.Parse(line[1]),int.Parse(line[2]));
+            }
+            count++;
+        }
+    }
+
+    //update WayArea Data dict
+    private void updateWayAreaData(List<string> csv_files)
+    {
+        int count = 0;
+        wayarea_data.Clear();
+        string csv_path = getFilePathFromFilename(csv_files, "wayarea.csv");
+        List<List<string>> data_str = reader.Read(csv_path);
+        foreach (var line in data_str)
+        {
+            if (count != 0)
+            {
+                wayarea_data.Add(new WayArea(int.Parse(line[0]), int.Parse(line[1])));
             }
             count++;
         }
